@@ -154,5 +154,94 @@ If you have multiple cores, both Task A and Task B can be run simultaneously on 
 - **Concurrency** is about managing tasks in such a way that they overlap in execution, without needing them to run at the same time. It can be done on single-core systems and is ideal for I/O-bound operations.
 - **Parallelism**, on the other hand, involves actually executing tasks at the same time on multiple processors or cores, which is useful for CPU-bound operations.
 
-Understanding both concepts helps optimize the use of resources and performance in multithreaded applications, particularly when you need to decide whether to use concurrency or parallelism based on the task and hardware available.
+---
+## Time Slicing
+
+- **Definition** : Time slicing divides CPU time into small intervals called time slices or quanta.
+- **Function** : The OS scheduler allocates these time slices to different processes and threads, ensuring each gets a fair share of CPU time.
+- **Purpose** : This prevents any single process or thread from monopolizing the CPU, improving responsiveness and enabling concurrent execution.
+
+---
+
+## Context Switching
+
+- **Definition** : Context switching is the process of saving the state of a currently running process or thread and loading the state of the next one to be executed.
+
+- **Function** : When a process or thread’s time slice expires, the OS scheduler performs a context switch to move the CPU’s focus to another process or thread.
+
+- **Purpose** : This allows multiple processes and threads to share the CPU, giving the appearance of simultaneous execution on a single-core CPU or improving parallelism on multi-core CPUs.
+
+Multitasking can be achieved through multithreading where each task is divided into threads that are managed concurrently.
+
+# Multi Threading in Java
+
+In Java, multithreading is the concurrent execution of two or more threads to maximize the utilization of the CPU. Java’s multithreading capabilities are part of the java.lang package, making it easy to implement concurrent execution.
+
+## Single Core env
+- In a single-core environment, Java’s multithreading is managed by the JVM and the OS, which switch between threads to give the illusion of concurrency.
+
+- Threads share the single core, and time-slicing and context-switching is used to manage thread execution. This time slicing is so well managed that it gives an illusion of parallelism but actually the process pf switiching context is so fast we think that threads are running parallely.
+
+## Multi Core env
+
+- In a multi-core environment, Java’s multithreading can take full advantage of the available cores.
+
+- The JVM can distribute threads across multiple cores, allowing true parallel execution of threads.
+
+---
+
+## Sequential execution
+
+in Sequential execution also When a Java program starts, one thread begins running immediately, which is called the **main thread**. This thread is responsible for executing the main method of a program.
+
+In context of Multi Threading we can easily say every program is single threaded by nature i.e. Main Thread to execute the main method until no thread thing is introduced in code.
+
+---
+
+# How to create a new Thread
+
+There are two ways to implemen the threads:
+- Implementing Runnable interface
+- Extending Thread Class
+
+## 1. Creating a Thread by Extending the `Thread` Class
+
+create a custom class that extends the `Thread` class and override its `run()` method to define the task that the thread will perform. Once you create the thread object, you call the `start()` method to begin execution.
+
+### Steps:
+- Extend the `Thread` class.
+- Override the `run()` method with the task you want the thread to execute.
+- Call the `start()` method to begin execution of the thread.
+
+
+*For this the Code is available at [ExtendThreadClass.java](./Basics/ExtendThreadClass.java) file.*
+
+### Example:
+Here is an example of creating a thread by extending the `Thread` class in Java. You can find the full code in the [ExtendThreadClass.java](./Basics/ExtendThreadClass.java) file..
+
+
+> **Note**: You cannot call the `run()` method directly. Instead, you call `start()`, which internally invokes the `run()` method in a new thread.
+
+## 2. Creating a Thread by Implementing the `Runnable` Interface
+
+Implement the `Runnable` interface and define the `run()` method. This method contains the code that the thread will execute. Then, you create a `Thread` object, passing the `Runnable` instance to it, and start the thread using `start()`.
+
+### Steps:
+- Implement the `Runnable` interface.
+- Override the `run()` method with the task to execute.
+- Create a `Thread` object, passing the `Runnable` instance to it.
+- Call the `start()` method on the `Thread` object.
+
+### Example:
+
+Here is an example of creating a thread by implementing the `Runnable` interface in Java. You can find the full code in the [MyRunnable.java](./Basics/MyRunnable.java) file.
+
+
+
+> **Note**: Using `Runnable` is a better choice when you want to share the same task among multiple threads, or when you want to extend another class while implementing `Runnable`.
+---
+
+
+
+#Thread Life Cycle
 
